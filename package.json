@@ -1,0 +1,14 @@
+{
+  "name": "hf-ide",
+  "main": "index.html",
+  "window": {
+    "title": "codename: Haxeflixel Editor",
+    "toolbar": false,
+    "frame": true,
+    "width": 800,
+    "height": 500,
+    "position": "mouse",
+    "min_width": 400,
+    "min_height": 200
+  }  
+}

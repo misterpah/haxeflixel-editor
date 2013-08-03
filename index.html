@@ -1,0 +1,134 @@
+<html>
+    <head>
+        <title>codename: Haxeflixel Editor</title>
+        <!-- jquery -->
+        <script src="./includes/js/jquery-1.9.1.min.js"></script>
+        <script src="./includes/js/jquery.xml2json.js"></script>
+        
+        <!-- editor -->
+        <script src="./includes/js/init.js"></script>
+        <script src="./includes/js/ide.js"></script>
+        <script src="./includes/js/autocomplete.js"></script>
+
+        <!-- codemirror -->
+        <script src="./includes/js/codemirror-3.12/lib/codemirror.js"></script>
+        <script src="./includes/js/codemirror-3.12/addon/edit/matchbrackets.js"></script>
+        <script src="./includes/js/codemirror-3.12/mode/haxe/haxe.js"></script>
+        <link href="./includes/js/codemirror-3.12/lib/codemirror.css" rel="stylesheet" media="all">
+        <link rel="stylesheet" href="./includes/js/codemirror-3.12/theme/blackboard.css">
+        
+        <!-- bootstrap -->
+        <link href="./includes/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="./includes/css/bootstrap-glyphicons.css" rel="stylesheet" media="screen">
+        
+        <script src="./includes/js/bootstrap.min.js"></script>
+        
+        <style>
+            html,body{margin:0px;padding:0px;overflow:hidden;}
+            /*#code{position:absolute;top:0px;left:0px;width:100px;height:100px;}*/
+            
+            .CodeMirror {
+            height: auto;
+            }
+            .CodeMirror-scroll {
+            overflow-y: hidden;
+            overflow-x: auto;
+            }            
+            
+            #nav{
+            position:relative
+            top:0px;
+            left:0px;
+            background-color: rgb(246, 246, 246);
+            min-height: 50px;
+            padding-right: 15px;
+            padding-left: 15px;
+            padding-top:12px;
+            border-bottom:1px solid rgb(230, 230, 230);
+            }
+
+            .nav_brand{
+            max-width: 200px;
+            padding-right: 15px;
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 20px;
+            color: rgb(119, 119, 119);
+            }
+            
+            #code_wrapper{
+            width:100%;
+            height:auto;
+            }
+            #code_textarea{
+            width:70%;
+            float:left;
+            border:1px solid #000000;
+            }
+            #code_autocomplete{
+            width:30%;
+            height:90%;
+            float:right;
+            background:#dddddd;
+            overflow-y:scroll;
+            }
+            
+            #code_autocomplete_inner{
+            margin:10px;
+            }
+            
+            .autocomplete_block{
+            border:1px solid #000000;
+            padding:10px;
+            margin-bottom:10px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!--- hidden stuffs START -->
+        <div style='display:none' id='editor_vars'>
+            projectFile <div id='projectFile'></div>
+            projectContent:<div id="projectContent"></div>
+            projectDialog:<input id="projectDialog" type="file" />
+        </div>
+        
+        <!--- hidden stuffs END   -->
+        
+        
+        <div id='display_editor' style='display:none'>
+            <div id='nav'>
+                <a class="nav_brand" href="#">codename: Haxeflixel Editor</a>
+                <span id='button_project' >
+                    <button type="button" onClick="ButtonChooseProject();" style="position:relative;top:-2px;margin-right:5px;" class="glyphicon glyphicon-folder-open btn btn-default btn-small">&nbsp;&nbsp;Open Haxe XML</button>
+                </span>
+                <span id='button_file' style='display:none'>
+                    <button type="button" onClick="ButtonChooseFile();" style="position:relative;top:-2px;margin-right:5px;" class="glyphicon glyphicon-folder-open btn btn-default btn-small">&nbsp;&nbsp;Open File</button>
+                    <button type="button" onClick="ButtonStoreFile();"  style="position:relative;top:-2px;margin-right:5px;" class="glyphicon glyphicon-download-alt  btn btn-default btn-small">&nbsp;&nbsp;Save File</button>
+                    <button type="button" onClick="compileToFlash();"  style="position:relative;top:-2px" class="glyphicon glyphicon-download-alt  btn btn-default btn-small">&nbsp;&nbsp;Compile (Flash)</button>
+                </span>
+            </div>
+
+
+
+
+            <div id='code_wrapper'>
+                <div id='code_textarea'></div>
+                <div id='code_autocomplete'>
+                    <div id="code_autocomplete_inner">
+                    </div>
+                </div>
+            </div>
+            <script>
+            jQuery(document).ready(function() {
+                $('#display_editor').fadeIn('slow');
+                $('#button_project').fadeIn('slow');
+                
+                createNewTab();
+            });
+            </script>        
+        </div>
+        
+        
+    </body>
+</html>
