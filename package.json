@@ -3,7 +3,7 @@
   "main": "index.html",
   "window": {
     "title": "codename: Haxeflixel Editor",
-    "toolbar": false,
+    "toolbar": true,
     "frame": true,
     "width": 800,
     "height": 500,

@@ -1,0 +1,25 @@
+name idea
+==========
+20130804 - Skrivener - "chfe" 
+20130804 - Chris - FlixelEdit 
+20130804 - Chris - FlixelSource
+20130804 - Chris - FlixelIDE
+20130804 - Chris - FlxEdit
+20130804 - Chris - FlxIDE
+
+
+feature requests
+================
+format : YYYYMMDD - haxeflixel username - feature
+20130803 - Chris - integrate with flixel-tools
+20130804 - Skrivener - create new project that execute flixel-tools. then auto load project file (xml)
+20130804 - Skrivener - display quickstart text once open editor
+20130804 - Skrivener - add page at haxeflixel wiki
+
+
+0.1
+=====
++ 1st release "codename: Haxe Flixel editor"
++ organize code into respected folder
++ initial effort of tracking changelog
++ initial effort of multi operating system
