@@ -11,16 +11,19 @@ function putsAutocomplete(error,stdout,stderr){
     $(document).triggerHandler("autocomplete_complete", stderr);
     }
 
-
+    
+function hint_haxe(editor,options){
+}    
+    
 
 $(document).on("autocomplete",function(event,data,key){
     if ((key == ".") | (key == '(') )
         {
-        // save first before make auto complete
         ButtonStoreFile();
         
         var id = session['window_active_id'];
         var fileName = $("#filename_"+id).html(); // this is a DIV
+        //CodeMirror.showHint(editors[id],CodeMirror.hint.haxe);
         
         filename_split = fileName.split('\\');
         className = filename_split[filename_split.length-1].split('.')[0];
@@ -40,35 +43,20 @@ $(document).on("autocomplete_complete",function(event,data){
         
         var json_array = "";
         var json_str = "";
-
-
-
+        var haxeHint = [];
+        
         if (typeof json == "object")
             {
             json_array = json.i;
             for (i = 0;i < json_array.length;i++)
                 {
                 var cur = json_array[i];
-                cur_n = cur.n;
-                cur_t = cur.t;
-                cur_d = cur.d;
-                console.log(cur);
-                var cur_str = '<div class="autocomplete_block">';
-                retStr +='<b>'+cur_n+'</b>';
-                retStr +='<p><i>'+cur_t+'</i></p>';
-                retStr +='</div>';
-                retStr += cur_str;
+                haxeHint.push(cur.n);
                 }
+            localStorage.haxeHint = haxeHint;
+            var id = session['window_active_id'];
+            CodeMirror.showHint(editors[id],CodeMirror.hint.haxe);
             }    
-        if (typeof json == "string")
-            {
-            var cur_str = '<div class="autocomplete_block">';
-            retStr +='<p><i>'+json+'</i></p>';
-            retStr +='</div>';
-            retStr += cur_str;    
-            }     
-        
-        
         }
     catch(err)
         {
@@ -80,6 +68,6 @@ $(document).on("autocomplete_complete",function(event,data){
         
         
     
-    $('#code_autocomplete_inner').html(retStr);
+    //$('#code_autocomplete_inner').html(retStr);
     
 });

@@ -61,6 +61,7 @@ function ButtonChooseFile(){
             $('#filename_'+id).html(filename); // this is a DIV
             fs.readFile(filename,"utf-8",function(err,data){
                 if (err) {return console.log(err);} 
+                console.log(data)
                 editors[id].setOption("value",data);
             });
         }
@@ -82,6 +83,8 @@ function ButtonStoreFile(){
     });
 }
 
+
+
 function createNewTab(){
     session['_window_count'] += 1;
     var id = session['_window_count'];
@@ -90,24 +93,32 @@ function createNewTab(){
     $('#editor_vars').append('<div>filename<div id="filename_'+id+'"></div><br/>fileDialog:<input id="fileDialog_'+id+'" type="file" /><br/>buffercode<textarea  id="bufferCode_'+id+'"></textarea></div>'); // create fileDialog & bufferCode for the instance
     $('#code_textarea').append('<textarea id="code_textarea_'+id+'" name="code_textarea_'+id+'"></textarea>');  // create textarea for the instance
     
+
+    CodeMirror.commands.haxe_autocomplete = function (cm){
+        //CodeMirror.showHint(cm,CodeMirror.hint.haxe);
+    }
+    
     editors[id] = CodeMirror.fromTextArea(document.getElementById("code_textarea_"+id), {
         lineNumbers: true,
         lineWrapping:true,
-        
         matchBrackets:true,
-        
-
         styleActiveLine:true,
-        
         indentUnit:4,
         smartIndent:true,
         indentWithTabs:true,
-        
+        extraKeys:{
+            "Ctrl-S": ButtonStoreFile,
+            "F5": compileToFlash
+            //"Ctrl-Space":"haxe_autocomplete"
+            
+        },
         
         
         viewportMargin: Infinity        
         });
     editors[id].setOption("theme","blackboard");
+    
+    
         
     editors[id].on("change",function(data){
         $('#bufferCode_'+id).val(data.getValue());
@@ -120,6 +131,7 @@ function createNewTab(){
     }
 
 function compileToFlash(){
+    ButtonStoreFile();
     if (system_check_os() == 'windows'){
         exec("cd /D "+$('#projectFile').html()+" & openfl test flash",
             function(error,stdout,stderr){

@@ -35,20 +35,10 @@
             height:auto;
             }
             #code_textarea{
-            width:70%;
+            width:100%;
             float:left;
             }
-            #code_autocomplete{
-            width:30%;
-            height:90%;
-            float:right;
-            background:#dddddd;
-            overflow-y:scroll;
-            }
-            
-            #code_autocomplete_inner{
-            margin:10px;
-            }
+
             
             .autocomplete_block{
             border:1px solid #000000;

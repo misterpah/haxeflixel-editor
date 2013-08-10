@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>codename: Haxeflixel Editor</title>
+        <title>HaxeFlixel IDE v0.2 (unofficial)</title>
         <!-- jquery -->
         <script src="./includes/js/jquery/jquery-1.9.1.min.js"></script>
         <script src="./includes/js/jquery/jquery.xml2json.js"></script>
@@ -10,22 +10,29 @@
         <link href="./includes/css/bootstrap-glyphicons.css" rel="stylesheet" media="screen">
         <script src="./includes/js/bootstrap/bootstrap.min.js"></script>        
         
+
+        <!-- codemirror JS-->
+        <script src="./includes/js/codemirror-3.15/lib/codemirror.js"></script>
+        <script src="./includes/js/codemirror-3.15/addon/hint/show-hint.js"></script>
+
+        <script src="./includes/js/codemirror-3.15/addon/edit/matchbrackets.js"></script>
+        <script src="./includes/js/codemirror-3.15/addon/selection/active-line.js"></script>
+        <script src="./includes/js/codemirror-3.15/mode/haxe/haxe.js"></script>
+        <link href="./includes/js/codemirror-3.15/lib/codemirror.css" rel="stylesheet" media="all">
+
+        <!-- codemirror CSS-->
+        <link rel="stylesheet" href="./includes/js/codemirror-3.15/addon/hint/show-hint.css">
+        <link rel="stylesheet" href="./includes/js/codemirror-3.15/theme/blackboard.css">
+
+
         <!-- editor JS -->
         <script src="./includes/js/editor/supporting_function.js"></script>
         <script src="./includes/js/editor/init.js"></script>
         <script src="./includes/js/editor/ide.js"></script>
         <script src="./includes/js/editor/autocomplete.js"></script>
+        <script src="./includes/js/editor/codemirror_haxe_hint.js"></script>
 
-        <!-- codemirror -->
-        <script src="./includes/js/codemirror-3.12/lib/codemirror.js"></script>
-        <script src="./includes/js/codemirror-3.12/addon/edit/matchbrackets.js"></script>
-        <script src="./includes/js/codemirror-3.12/addon/selection/active-line.js"></script>
-        <script src="./includes/js/codemirror-3.12/mode/haxe/haxe.js"></script>
-        
-        
-        
-        <link href="./includes/js/codemirror-3.12/lib/codemirror.css" rel="stylesheet" media="all">
-        <link rel="stylesheet" href="./includes/js/codemirror-3.12/theme/blackboard.css">
+
         
         
         <!-- editor CSS-->
@@ -43,7 +50,7 @@
         
         <div id='display_editor' style='display:none'>
             <div id='nav'>
-                <a class="nav_brand" href="#">codename: Haxeflixel Editor</a>
+                <a class="nav_brand" href="#">HaxeFlixel IDE</a>
                 <span id='button_project' >
                     <button type="button" onClick="" disabled="disabled"   style="position:relative;top:-2px;margin-right:5px;" class="glyphicon glyphicon-file btn btn-default btn-small">&nbsp;&nbsp;Create New Project</button>
                     <button type="button" onClick="ButtonChooseProject();" style="position:relative;top:-2px;margin-right:5px;" class="glyphicon glyphicon-folder-open btn btn-default btn-small">&nbsp;&nbsp;Open Existing Project</button>
@@ -57,17 +64,16 @@
 
             <div id='code_wrapper'>
                 <div id='code_textarea'></div>
-                <div id='code_autocomplete'>
-                    <div id="code_autocomplete_inner">
-                    </div>
-                </div>
             </div>
             <script>
+
             jQuery(document).ready(function() {
                 $('#display_editor').fadeIn('slow');
                 $('#button_project').fadeIn('slow');
                 createNewTab();
-            });
+                //CodeMirror.registerHelper("hint","haxe",hint_haxe);
+                
+                });
             </script>        
         </div>
     </body>
