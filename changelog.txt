@@ -20,3 +20,11 @@ N 20130804 - Skrivener - add page at haxeflixel wiki
 + rename editor to HaxeFlixel IDE
 + upgrade codemirror from 3.12 to 3.15 (for autocomplete)
 + add autocomplete to editor
+
+
+0.3
+=====
++ complete rewrite of the editor to make it more robust
++ autocomplete to detect function parameters
++ add tabs
++ new interface

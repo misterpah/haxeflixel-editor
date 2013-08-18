@@ -1,42 +1,59 @@
 <html>
     <head>
-        <title>HaxeFlixel IDE v0.2 (unofficial)</title>
+        <title>HaxeFlixel IDE v0.3 (unofficial)</title>
         <!-- jquery -->
-        <script src="./includes/js/jquery/jquery-1.9.1.min.js"></script>
-        <script src="./includes/js/jquery/jquery.xml2json.js"></script>
-        
+        <script src="./js/jquery/jquery-1.9.1.min.js"></script>
+        <script src="./js/jquery/jquery.xml2json.js"></script>
+
         <!-- bootstrap -->
-        <link href="./includes/css/bootstrap.min.css" rel="stylesheet" media="screen">
-        <link href="./includes/css/bootstrap-glyphicons.css" rel="stylesheet" media="screen">
-        <script src="./includes/js/bootstrap/bootstrap.min.js"></script>        
+        <link href="./css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="./css/bootstrap-glyphicons.css" rel="stylesheet" media="screen">
+        <script src="./js/bootstrap/bootstrap.min.js"></script>        
         
-
         <!-- codemirror JS-->
-        <script src="./includes/js/codemirror-3.15/lib/codemirror.js"></script>
-        <script src="./includes/js/codemirror-3.15/addon/hint/show-hint.js"></script>
+        <script src="./js/codemirror-3.15/lib/codemirror.js"></script>
+        <script src="./js/codemirror-3.15/addon/hint/show-hint.js"></script>
 
-        <script src="./includes/js/codemirror-3.15/addon/edit/matchbrackets.js"></script>
-        <script src="./includes/js/codemirror-3.15/addon/selection/active-line.js"></script>
-        <script src="./includes/js/codemirror-3.15/mode/haxe/haxe.js"></script>
-        <link href="./includes/js/codemirror-3.15/lib/codemirror.css" rel="stylesheet" media="all">
+        <script src="./js/codemirror-3.15/addon/edit/matchbrackets.js"></script>
+        <script src="./js/codemirror-3.15/addon/selection/active-line.js"></script>
+        <script src="./js/codemirror-3.15/mode/haxe/haxe.js"></script>
+        <link href="./js/codemirror-3.15/lib/codemirror.css" rel="stylesheet" media="all">
 
         <!-- codemirror CSS-->
-        <link rel="stylesheet" href="./includes/js/codemirror-3.15/addon/hint/show-hint.css">
-        <link rel="stylesheet" href="./includes/js/codemirror-3.15/theme/blackboard.css">
-
+        <link rel="stylesheet" href="./js/codemirror-3.15/addon/hint/show-hint.css">
+        <link rel="stylesheet" href="./js/codemirror-3.15/theme/blackboard.css">
 
         <!-- editor JS -->
-        <script src="./includes/js/editor/supporting_function.js"></script>
-        <script src="./includes/js/editor/init.js"></script>
-        <script src="./includes/js/editor/ide.js"></script>
-        <script src="./includes/js/editor/autocomplete.js"></script>
-        <script src="./includes/js/editor/codemirror_haxe_hint.js"></script>
+        <script src="./js/editor/supporting_function.js"></script>
+        <script src="./js/editor/init.js"></script>
+        <script src="./js/editor/ide.js"></script>
+        <script src="./js/editor/autocomplete.js"></script>
+        <script src="./js/editor/codemirror_haxe_hint.js"></script>
 
-
-        
-        
         <!-- editor CSS-->
-        <link href="./includes/css/editor.css" rel="stylesheet" media="screen">
+        <link href="./css/editor.css" rel="stylesheet" media="screen">
+
+        
+        <!-- jquery-notify -->
+        <script src="./js/jquery/pines/jquery.pnotify.js"></script>
+        <link href="./js/jquery/pines/jquery.pnotify.default.css" rel="stylesheet" media="screen">
+        <link href="./js/jquery/pines/jquery.pnotify.default.icons.css" rel="stylesheet" media="screen">        
+        
+        
+                
+        
+        <script>
+            jQuery(document).ready(function() {
+                splash_state_init();
+                $("#splash").fadeIn("slow");
+                
+
+
+
+                
+                });
+        </script>   
+        
     </head>
 
     <body>
@@ -45,36 +62,69 @@
             projectFile <div id='projectFile'></div>
             projectContent:<div id="projectContent"></div>
             projectDialog:<input id="projectDialog" type="file" />
+            fileDialog:<input id="fileDialog" type="file" />
         </div>
-        <!--- hidden stuffs END   -->
+
+        <div class="state" id='splash'>
+            <div class='valign_parent'>
+                <div class="valign">
+                    <div class="well well-sm">
+                        <img width=100% src="./img/haxeflixel-logo.png" />
+                        <h3 class="text-center">HaxeFlixel IDE</h3>
+                        <p class="text-center">version 0.3</p>
+                        <br/>
+                        <button id="button_newProject"  type="button" class="glyphicon glyphicon-file btn btn-default btn-small btn-block"        onClick="" disabled="disabled">&nbsp;&nbsp;Create New Project</button>
+                        <br/>
+                        <button id="button_openProject" type="button" class="glyphicon glyphicon-folder-open btn btn-default btn-small btn-block" onClick="ide_button('openProject');">&nbsp;&nbsp;Open Existing Project</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         
-        <div id='display_editor' style='display:none'>
-            <div id='nav'>
-                <a class="nav_brand" href="#">HaxeFlixel IDE</a>
-                <span id='button_project' >
-                    <button type="button" onClick="" disabled="disabled"   style="position:relative;top:-2px;margin-right:5px;" class="glyphicon glyphicon-file btn btn-default btn-small">&nbsp;&nbsp;Create New Project</button>
-                    <button type="button" onClick="ButtonChooseProject();" style="position:relative;top:-2px;margin-right:5px;" class="glyphicon glyphicon-folder-open btn btn-default btn-small">&nbsp;&nbsp;Open Existing Project</button>
-                </span>
-                <span id='button_file' style='display:none'>
-                    <button type="button" onClick="ButtonChooseFile();" style="position:relative;top:-2px;margin-right:5px;" class="glyphicon glyphicon-folder-open btn btn-default btn-small">&nbsp;&nbsp;Open File</button>
-                    <button type="button" onClick="ButtonStoreFile();"  style="position:relative;top:-2px;margin-right:5px;" class="glyphicon glyphicon-download-alt  btn btn-default btn-small">&nbsp;&nbsp;Save File</button>
-                    <button type="button" onClick="compileToFlash();"  style="position:relative;top:-2px" class="glyphicon glyphicon-download-alt  btn btn-default btn-small">&nbsp;&nbsp;Compile (Flash)</button>
-                </span>
-            </div>
-
-            <div id='code_wrapper'>
-                <div id='code_textarea'></div>
-            </div>
-            <script>
-
-            jQuery(document).ready(function() {
-                $('#display_editor').fadeIn('slow');
-                $('#button_project').fadeIn('slow');
-                createNewTab();
-                //CodeMirror.registerHelper("hint","haxe",hint_haxe);
+        <div class="state" id='editor'>
+            <div style="height:inherit;" class="row">
+            
+                <div id="editor_left" class="col-3 ">
+                    <div style="margin-top:20px;" class="text-center">
+                        <h3 style="color:#ffffff">HaxeFlixel IDE</h3>
+                        <span id="button_openFile" onClick="ide_button('openFile');" title="Open File (Ctrl+O)" class="glyphicon glyphicon-folder-open"></span>
+                        <span id="button_saveFile" onClick="ide_button('saveFile');" title="Save File (Ctrl+S)" class="glyphicon glyphicon-download-alt icon-disabled"></span>
+                        <span id="button_compile"  onClick="ide_button('compileFlash');" title="Compile to flash (F5)" class="glyphicon glyphicon-play"></span>
+                        <span id="button_errors"   onClick="ide_button('error');" title="Errors" class="glyphicon glyphicon-fire icon-disabled"></span>
+                    </div>
+                    <hr/>
+                    <ul id="editor_tabs" class="nav nav-list">
+                    </ul>                    
+                </div>
+               
+                <div id="editor_right" class="col-9 ">
+               
+                    <div id="editor_help" class='valign_parent'>
+                        <div class="valign">
+                            <div class="well well-sm">
+                                <img width=100% src="./img/haxeflixel-logo.png" />
+                                <h3 class="text-center">HaxeFlixel IDE</h3>
+                                <p class="text-center">version 0.3</p>
+                                <hr/>
+                                <p class="text-center"><b>Help</b></p>
+                                
+                                <div class="row">
+                                    <div class="col-6">
+                                        <p><span title="Open File (Ctrl+O)" class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp; Open file in a new tab</p>
+                                        <p><span title="Save File (Ctrl+O)" class="glyphicon glyphicon-download-alt"></span>&nbsp;&nbsp; Save the current active file</p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p><span title="Compile to flash (F5)" class="glyphicon glyphicon-play"></span>&nbsp;&nbsp; Compile project to Flash</p>
+                                        <p><span title="Errors" class="glyphicon glyphicon-fire"></span>&nbsp;&nbsp; Error console (only when there's error)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                    <div id='code_textarea'></div>                
+                </div>
                 
-                });
-            </script>        
-        </div>
+            </div>
+        </div> <!-- end state #editor -->
     </body>
 </html>

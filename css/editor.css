@@ -1,0 +1,132 @@
+            html,body{margin:0px;padding:0px;overflow-y:hidden;background:url(./../img/broken_noise.png) repeat;}
+            /*#code{position:absolute;top:0px;left:0px;width:100px;height:100px;}*/
+            
+            
+            .CodeMirror {
+            height: inherit;
+            }
+            /*
+            .CodeMirror-scroll {
+            overflow-y: hidden;
+            overflow-x: auto;
+            } 
+
+            */
+            
+            #nav{
+            position:relative;
+            background-color: rgb(246, 246, 246);
+            min-height: 40px;
+            padding-right: 15px;
+            padding-left: 15px;
+            padding-top:8px;
+            border-bottom:1px solid #DCDCDC;
+            
+            font-size:20px;
+            }
+
+            .nav_brand{
+            max-width: 200px;
+            padding-right: 15px;
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 20px;
+            color: rgb(119, 119, 119);
+            }
+            
+            #code_wrapper{
+            width:100%;
+            height:auto;
+            }
+            #code_textarea{
+            width:100%;
+            
+            }
+            
+            #editor{
+            
+            }
+
+        .functionHint{
+            z-index:9999;
+            position:relative;
+            border:1px solid #444444;
+            padding:5px;
+            background:#888888;
+            color:#ffffff;
+        }        
+        
+        .state{
+            height:100%;
+            display:none;
+
+            }
+
+        .valign_parent{
+            position: relative;
+            height:100%;
+            }
+        .valign_parent .valign{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width:50%;
+            height: 70%;
+            margin: auto;
+            }
+        
+        #editor_left{
+            background:#3E3E3E;
+            height:inherit;
+            padding:0px;
+            }        
+
+        #editor_right{
+            height:inherit;
+            margin-left:0px;
+            padding-left:0px;
+            }              
+        #nav .glyphicon{
+            padding-left:15px;
+            }
+        #editor_left .glyphicon:hover{
+            color:#FFC132;
+            }   
+            
+        #editor_left .glyphicon{
+        color:#ffffff;
+        font-size:20px;
+        padding-right:10px;
+        }
+
+        #editor_left .icon-disabled{
+        color:#888888;
+        }        
+        
+        .nav .nav-header{
+        color:#ffffff;
+        text-align:center;
+        }
+            
+        .nav .active{
+        background:#FFC132;
+        }
+        
+        .nav li{
+        padding-left:15px;
+        }        
+        
+        .nav li a{
+         color:#ffffff;
+        }
+        .nav li.active:hover  a{
+        background:#FFC132;
+        color:#ffffff;
+        }        
+        .nav li:hover a{
+        color:#ffffff;
+        background:#202020;
+        }            
+            
