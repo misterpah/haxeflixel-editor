@@ -3,6 +3,42 @@ $(document).on("system_parse_project_complete",function(event){
     $('#editor').show();
 })
 
+function ide_alert(type_error,content)
+{
+    var type_text = "";
+    if (type_error == "error")
+    {
+        type_error = "danger";
+        type_text = "Error";
+
+    }
+
+    if (type_error == "warning")
+    {
+        type_error = "warning";
+        type_text = "Warning";
+    }
+
+    skip = false;
+    if (content == undefined)
+    {
+        skip = true;
+    }
+
+
+
+var retstr = ['<div style="margin:10px;" class="alert alert-'+type_error+' fade in">',
+'<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>',
+'<strong>'+type_text+' :</strong><br/>'+content,
+'</div>'].join("\n");
+
+if (skip ==false)
+    {
+    $('#notify_position').append(retstr);    
+    }
+
+}
+
 
 function ide_button(type)
     {
@@ -233,6 +269,7 @@ function system_createNewTab(){
     editors[id].setOption("theme","blackboard");
     
     editors[id].on("change",function(data){
+        console.log("Changed!");
         $('#bufferCode_'+id).val(data.getValue());
         var the_index = editors[id].getDoc().indexFromPos(editors[id].getCursor());
         var the_text = data.getValue()[the_index -1];
@@ -249,9 +286,16 @@ function system_compileToFlash(){
     if (system_check_os() == 'windows'){
         exec("cd /D "+$('#projectFile').html()+" & openfl test flash",
             function(error,stdout,stderr){
-                console.log(error);
-                console.log(stdout);
-                console.log(stderr);
+                if (error != null)
+                {
+                    ide_alert("error",stderr);
+                }
+                /*
+                if (typeof error == "E") // error 
+                {
+                    console.log(stderr);
+                }
+                */
                 /*
                 var cur_str = '<div class="autocomplete_block">';
                 cur_str += '<p>'+error+'</p>';

@@ -11,6 +11,11 @@ function putsAutocomplete(error,stdout,stderr){
     $(document).triggerHandler("autocomplete_complete", stderr);
     }
 
+
+function putsAutocomplete(error,stdout,stderr){
+    $(document).triggerHandler("autocomplete_complete", stderr);
+    }
+
     
 function hint_haxe(editor,options){
 }    
@@ -38,26 +43,56 @@ $(document).on("autocomplete",function(event,data,key){
 
 $(document).on("autocomplete_complete",function(event,data){
 
+    var skip = false;
+    // check if data starts with xml (<)
+    //console.log(data);
+    var startswith = data.charAt(0);
+    if (startswith != "<")
+    {
+        skip = true;
+    }
+
+
+    if (skip == true)
+    {
+        ide_alert(data);
+    }
+
     //var retStr = "";
     
     ///////////////////////
     // seek object in class
-    if (session['last_key'] == ".") 
+    if (session['last_key'] == "." && skip == false) 
         {
+        session['last_key'] = '';
         var json = $.xml2json(data);
         var json_array = "";
         var json_str = "";
         var haxeHint = [];
+
+
         
+        
+        //
+        
+        if (json instanceof Array == true)
+        {
         json_array = json.i;
         for (i = 0;i < json_array.length;i++)
             {
             var cur = json_array[i];
             haxeHint.push(cur.n);
             }
+        }
+        else
+        {
+            //haxeHint.push(json);
+        }
+
         localStorage.haxeHint = haxeHint;
         var id = session['window_active_id'];
         CodeMirror.showHint(editors[id],CodeMirror.hint.haxe);
+        
         } // END seek object in class
         
 
@@ -66,7 +101,7 @@ $(document).on("autocomplete_complete",function(event,data){
         
     //////////////////////////
     // seek object in function
-    if (session['last_key'] == "(") 
+    if (session['last_key'] == "(" && skip == false) 
         {
         var json = $.xml2json(data);
         var id = session['window_active_id'];

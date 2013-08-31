@@ -45,12 +45,7 @@
         <script>
             jQuery(document).ready(function() {
                 splash_state_init();
-                $("#splash").fadeIn("slow");
-                
-
-
-
-                
+                $("#splash").fadeIn("slow");                
                 });
         </script>   
         
@@ -58,12 +53,15 @@
 
     <body>
         <!--- hidden stuffs START -->
+
         <div style='display:none' id='editor_vars'>
             projectFile <div id='projectFile'></div>
             projectContent:<div id="projectContent"></div>
             projectDialog:<input id="projectDialog" type="file" />
             fileDialog:<input id="fileDialog" type="file" />
         </div>
+   
+        <div style="position:absolute;top:10px;left:10px;width:100%;z-index:999;" id='notify_position'></div>
 
         <div class="state" id='splash'>
             <div class='valign_parent'>
