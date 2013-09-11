@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>HaxeFlixel IDE v0.3 (unofficial)</title>
+        <title>HaxeFlixel IDE (unofficial)</title>
         <!-- jquery -->
         <script src="./js/jquery/jquery-1.9.1.min.js"></script>
         <script src="./js/jquery/jquery.xml2json.js"></script>
@@ -45,12 +45,9 @@
         <script>
             jQuery(document).ready(function() {
                 splash_state_init();
-                $("#splash").fadeIn("slow");
-                
-
-
-
-                
+                version = "0.4";
+                $("#splash").fadeIn("slow");     
+                $("#version").html("Version "+version);
                 });
         </script>   
         
@@ -58,12 +55,15 @@
 
     <body>
         <!--- hidden stuffs START -->
+
         <div style='display:none' id='editor_vars'>
             projectFile <div id='projectFile'></div>
             projectContent:<div id="projectContent"></div>
             projectDialog:<input id="projectDialog" type="file" />
             fileDialog:<input id="fileDialog" type="file" />
         </div>
+   
+        <div style="position:absolute;top:10px;left:10px;width:100%;z-index:999;" id='notify_position'></div>
 
         <div class="state" id='splash'>
             <div class='valign_parent'>
@@ -71,7 +71,7 @@
                     <div class="well well-sm">
                         <img width=100% src="./img/haxeflixel-logo.png" />
                         <h3 class="text-center">HaxeFlixel IDE</h3>
-                        <p class="text-center">version 0.3</p>
+                        <p id="version" class="text-center"></p>
                         <br/>
                         <button id="button_newProject"  type="button" class="glyphicon glyphicon-file btn btn-default btn-small btn-block"        onClick="" disabled="disabled">&nbsp;&nbsp;Create New Project</button>
                         <br/>
@@ -90,7 +90,6 @@
                         <span id="button_openFile" onClick="ide_button('openFile');" title="Open File (Ctrl+O)" class="glyphicon glyphicon-folder-open"></span>
                         <span id="button_saveFile" onClick="ide_button('saveFile');" title="Save File (Ctrl+S)" class="glyphicon glyphicon-download-alt icon-disabled"></span>
                         <span id="button_compile"  onClick="ide_button('compileFlash');" title="Compile to flash (F5)" class="glyphicon glyphicon-play"></span>
-                        <span id="button_errors"   onClick="ide_button('error');" title="Errors" class="glyphicon glyphicon-fire icon-disabled"></span>
                     </div>
                     <hr/>
                     <ul id="editor_tabs" class="nav nav-list">
@@ -102,11 +101,9 @@
                     <div id="editor_help" class='valign_parent'>
                         <div class="valign">
                             <div class="well well-sm">
-                                <img width=100% src="./img/haxeflixel-logo.png" />
-                                <h3 class="text-center">HaxeFlixel IDE</h3>
-                                <p class="text-center">version 0.3</p>
+                                
+                                <h3 class="text-center">Help</h3>
                                 <hr/>
-                                <p class="text-center"><b>Help</b></p>
                                 
                                 <div class="row">
                                     <div class="col-6">
@@ -115,7 +112,6 @@
                                     </div>
                                     <div class="col-6">
                                         <p><span title="Compile to flash (F5)" class="glyphicon glyphicon-play"></span>&nbsp;&nbsp; Compile project to Flash</p>
-                                        <p><span title="Errors" class="glyphicon glyphicon-fire"></span>&nbsp;&nbsp; Error console (only when there's error)</p>
                                     </div>
                                 </div>
                             </div>

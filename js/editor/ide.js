@@ -3,6 +3,42 @@ $(document).on("system_parse_project_complete",function(event){
     $('#editor').show();
 })
 
+function ide_alert(type_error,content)
+{
+    var type_text = "";
+    if (type_error == "error")
+    {
+        type_error = "danger";
+        type_text = "Error";
+
+    }
+
+    if (type_error == "warning")
+    {
+        type_error = "warning";
+        type_text = "Warning";
+    }
+
+    skip = false;
+    if (content == undefined)
+    {
+        skip = true;
+    }
+
+
+
+var retstr = ['<div style="margin:10px;" class="alert alert-'+type_error+' fade in">',
+'<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>',
+'<strong>'+type_text+' :</strong><br/>'+content,
+'</div>'].join("\n");
+
+if (skip ==false)
+    {
+    $('#notify_position').append(retstr);    
+    }
+
+}
+
 
 function ide_button(type)
     {
@@ -35,12 +71,10 @@ function ide_choose_project(){
         if (chooser.val() != "")
             {
             var filename = $(this).val();
-            if (system_check_os() == "windows")
-                {
-                var projectFolder = filename.split(path.sep);
-                projectFolder.pop();
-                projectFolder = projectFolder.join(path.sep);                
-                }
+            console.log(filename);
+            var projectFolder = filename.split(path.sep);
+            projectFolder.pop();
+            projectFolder = projectFolder.join(path.sep);                
             $('#projectFile').html(projectFolder); // this is a DIV
             system_parse_project();
             }
@@ -104,101 +138,6 @@ function ide_choose_file(){
     }
 
 
-/*
-function ButtonChooseProject(){
-    var chooser = $("#projectDialog");
-    var prev_file = chooser.val();
-	chooser.trigger('click');
-    chooser.change(function(evt) {
-        if (chooser.val() != ""){
-            var filename = $(this).val();
-            
-            if (system_check_os() == 'windows'){
-                var projectFolder = filename.split('\\');
-                projectFolder.pop();
-                projectFolder = projectFolder.join('\\');
-                }
-                
-            $('#projectFile').html(projectFolder); // this is a DIV
-            $('#button_project').hide();
-            $('#button_file').fadeIn('slow');
-            
-            if (system_check_os() == 'windows'){    
-                exec("cd /D "+$('#projectFile').html()+" & openfl display flash",
-                    function(error,stdout,stderr){
-                        $('#projectContent').html(stdout);
-                        var content_push = [];
-                        var content = stdout.split("\n");
-                        var i = 0;
-
-                        for (i = 0 ; i < content.length;i++)
-                            {
-                            var cur = content[i];
-                            if (cur.indexOf('-lib') == 0) // starts with
-                                {
-                                content_push.push(cur);
-                                }
-                            else if (cur.indexOf('-cp') == 0) 
-                                {
-                                content_push.push(cur);
-                                }
-                            }
-                        content = content_push.join(' ');
-                        $('#projectContent').html(content);   
-                        $(document).trigger("event_project_is_open");
-                    });
-                } // END if os windows
-        }
-    });
-}
-
-
-    
-    
-    
-function ButtonChooseFile(){
-    var id = session['window_active_id'];
-    var chooser = $("#fileDialog_"+id);    
-	chooser.trigger('click');
-    
-    chooser.change(function(evt) {
-    //console.log(chooser.val());
-        if (chooser.val() != ""){
-            var filename = $(this).val();
-            
-            
-            if (fileLoaded == false){
-                $('#filename_'+id).html(filename); // this is a DIV
-                fs.readFile(filename,"utf-8",function(err,data){
-                    if (err) {return console.log(err);} 
-                    //console.log(data)
-                    editors[id].setOption("value",data);
-                });
-            }
-        }
-    });
-}
-
-function ButtonStoreFile(){
-    var id = session['window_active_id'];
-    var fileName = $("#filename_"+id).html(); // this is a DIV
-    var theContent = $("#bufferCode_"+id).val();
-    //console.log(fileName);
-    //console.log(theContent);
-    fs.writeFile(fileName, theContent, function(err) {
-        if(err) {
-          //console.log("FS : " + err);
-        } else {
-          console.log("FS : save "+fileName);
-          //btn-success
-          $("#btn_save_file").addClass("btn-success")
-          setTimeout(function(){$("#btn_save_file").removeClass("btn-success");},1000)
-        }
-    });
-}
-
-*/
-
 function ide_store_file(){
     var id = session['window_active_id'];
     var filename = $("#filename_"+id).html(); // this is a DIV
@@ -225,6 +164,7 @@ function system_createNewTab(){
         smartIndent:true,
         indentWithTabs:true,
         extraKeys:{
+	        "Ctrl-O": ide_choose_file,
             "Ctrl-S": ide_store_file,
             "F5": system_compileToFlash
         },
@@ -232,41 +172,67 @@ function system_createNewTab(){
         });
     editors[id].setOption("theme","blackboard");
     
-    editors[id].on("change",function(data){
-        $('#bufferCode_'+id).val(data.getValue());
+    editors[id].on("change",function(data)
+    	{
         var the_index = editors[id].getDoc().indexFromPos(editors[id].getCursor());
-        var the_text = data.getValue()[the_index -1];
-        var the_data = Array(the_index,the_text);
-        $(document).triggerHandler("autocomplete", the_data);
-        });
         
+        if (the_index != session['current_key_pos'])
+    	    {
+	        console.log("Changed!");
+			$('#bufferCode_'+id).val(data.getValue());    
+		    session['last_key'] = data.getValue()[the_index -1];
+		    session['last_last_key'] = data.getValue()[the_index -2];
+			session['current_key_pos'] = the_index;
+
+			var key = session['last_key'];
+			var prev_key = session['last_key'];
+			
+			if (key == ")")
+				{
+				var curString = "#function_hint_line_"+editors[id].getCursor().line;
+				$(curString).remove();				
+				}
+			
+			if ((key == ".") | (key == '('))
+				{
+				if (isNaN(prev_key))
+					{
+				    $(document).triggerHandler("autocomplete");
+				    }
+			    }
+			}
+		});
+		        
     }
 
+
+
 function system_compileToFlash(){
-    ide_store_file();
-    //$("#btn_compile").addClass("btn-warning")
+	if (session['window_active_id'] != 0)
+		{
+		ide_store_file();
+		}
+	
+	var os_cmd = "";
+	var target = "flash";
+	
+    if (system_check_os() == 'linux'){
+	os_cmd = "cd "+$('#projectFile').html()+" ; openfl test "+target
+    }
+
+	if (system_check_os() == 'windows'){
+	os_cmd = "cd /D "+$('#projectFile').html()+" & openfl test "+target
+	}
     
-    if (system_check_os() == 'windows'){
-        exec("cd /D "+$('#projectFile').html()+" & openfl test flash",
-            function(error,stdout,stderr){
-                console.log(error);
-                console.log(stdout);
-                console.log(stderr);
-                /*
-                var cur_str = '<div class="autocomplete_block">';
-                cur_str += '<p>'+error+'</p>';
-                cur_str += '</div>';
-                cur_str += '<div class="autocomplete_block">'
-                cur_str += '<p>'+stdout+'</p>'
-                cur_str += '</div>';
-                cur_str += '<div class="autocomplete_block">';
-                cur_str += stderr+'</p>';
-                cur_str += '</div>';     
-                $('#code_autocomplete_inner').html(cur_str);        
-                */
-                //setTimeout(function(){$("#btn_compile").removeClass("btn-warning");},500)            
+    console.log(os_cmd);
+    exec(os_cmd,
+        function(error,stdout,stderr){
+            if (error != null)
+                {
+                ide_alert("error",stderr);
                 }
-            );
+    
+            }
+        );
         
-    } // END if os windows
 }
