@@ -3,7 +3,7 @@
             
             
             .CodeMirror {
-            height: inherit;
+            height: 100%;
             }
             /*
             .CodeMirror-scroll {

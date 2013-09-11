@@ -6,6 +6,7 @@ function splash_state_init() // executed in $(document).ready
     editors = [];
     session['last_key'] = "";
     localStorage.haxeHint = new Array();
+     
     }
 
 
