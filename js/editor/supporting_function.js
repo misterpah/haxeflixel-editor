@@ -4,33 +4,6 @@ var path = require("path");
 var exec = require('child_process').exec;
 
 
-function notify(title_text,content_text)
-    {
-    alert(title_text +"\n"+content_text);
-
-        /*
-    $.pnotify_remove_all();
-    $.pnotify({
-        title: title_text,
-        text: content_text,
-        maxonscreen: 1,
-        
-        history: false,
-        hide: false,
-        sticker: false,     
-        closer_hover: false,
-        remove:false,
-        
-       
-        hide:false
-        delay:2000
-        nonblock: true,
-        nonblock_opacity: .2,        
-       
-        });
-        */
-    }
-
 function system_check_os(){
     switch(os.type())
         {
@@ -57,7 +30,8 @@ function system_saveFile(filename, content)
 function system_parse_project()
     {
     var exec_str = "";
-    if (system_check_os() == 'windows') {exec_str = "cd /D "+$('#projectFile').html()+" & openfl display flash";}
+    if (system_check_os() == 'windows') {exec_str = "cd /D "+$('#projectFile').html()+" & openfl display -hxml flash";}
+    if (system_check_os() == 'linux') {exec_str = "cd "+$('#projectFile').html()+" ; openfl display -hxml flash";}
     exec(exec_str,
         function(error,stdout,stderr){
             var the_error = false;
@@ -81,6 +55,14 @@ function system_parse_project()
                         {
                         content_push.push(cur);
                         }
+                    else if (cur.indexOf('-main') == 0) 
+                        {
+                        content_push.push(cur);
+                        }                        
+                    else if (cur.indexOf('-D') == 0) 
+                        {
+                        content_push.push(cur);
+                        }                        
                     }
                 content = content_push.join(' ');
                 $('#projectContent').html(content);   

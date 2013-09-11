@@ -21,24 +21,30 @@ function hint_haxe(editor,options){
 }    
     
 
-$(document).on("autocomplete",function(event,data,key){
-    if ((key == ".") | (key == '(')  |  (key == ')') | (key == ';') )
-        {
-        session['last_key'] = key;
+$(document).on("autocomplete",function(event){
+
+		
+
         ide_store_file();
         
         var id = session['window_active_id'];
         var fileName = $("#filename_"+id).html(); // this is a DIV
-        //CodeMirror.showHint(editors[id],CodeMirror.hint.haxe);
+	
+		filename_split = fileName.split(path.sep);
+		className = filename_split[filename_split.length-1].split('.')[0];
+
+		if (system_check_os() == 'linux'){
+        execStr = "cd "+$('#projectFile').html()+" ; haxe "+$('#projectContent').html().split("\n").join(" ") +" --display "+fileName+"@"+session['current_key_pos'] ;		
+
+		}
+		if (system_check_os() == 'windows'){
+
+        execStr = "cd /D "+$('#projectFile').html()+" & haxe "+$('#projectContent').html().split("\n").join(" ") +" -main "+className+" --display "+fileName+"@"+session['current_key_pos'] ;
+		}
+		
+		console.log(execStr);
         
-        filename_split = fileName.split('\\');
-        className = filename_split[filename_split.length-1].split('.')[0];
-        fileName = fileName.replace(/\\/g,"\\\\");        
-        
-        execStr = "cd /D "+$('#projectFile').html()+" & haxe "+$('#projectContent').html().split("\n").join(" ") +" -main "+className+" --display "+fileName+"@"+data ;
         exec(execStr,putsAutocomplete);
-        }
-    
 });
 
 $(document).on("autocomplete_complete",function(event,data){
@@ -47,6 +53,7 @@ $(document).on("autocomplete_complete",function(event,data){
     // check if data starts with xml (<)
     //console.log(data);
     var startswith = data.charAt(0);
+    console.log(startswith);
     if (startswith != "<")
     {
         skip = true;
@@ -54,9 +61,9 @@ $(document).on("autocomplete_complete",function(event,data){
 
 
     if (skip == true)
-    {
-        ide_alert(data);
-    }
+   		{
+        ide_alert("error",data);
+    	}
 
     //var retStr = "";
     
@@ -64,18 +71,16 @@ $(document).on("autocomplete_complete",function(event,data){
     // seek object in class
     if (session['last_key'] == "." && skip == false) 
         {
-        session['last_key'] = '';
         var json = $.xml2json(data);
-        var json_array = "";
-        var json_str = "";
         var haxeHint = [];
 
 
         
-        
+        console.dir(typeof json);
+        console.dir(json instanceof Array);
         //
         
-        if (json instanceof Array == true)
+        if (json instanceof Object == true)
         {
         json_array = json.i;
         for (i = 0;i < json_array.length;i++)
@@ -110,7 +115,7 @@ $(document).on("autocomplete_complete",function(event,data){
         } // END seek object in function
     
     
-    if ( (session['last_key'] == ")") | (session['last_key'] == ";") )
+    if (session['last_key'] == ";")
         {
         var id = session['window_active_id'];
         var curString = "#function_hint_line_"+editors[id].getCursor().line;
@@ -118,55 +123,4 @@ $(document).on("autocomplete_complete",function(event,data){
         }    
     
     
-    /*
-    try{
-        var json = $.xml2json(data); 
-        
-        var json_array = "";
-        var json_str = "";
-        var haxeHint = [];
-
-        console.log(session['last_key']);
-        if (session['last_key'] == "("){
-        var id = session['window_active_id'];
-        htmlNode = $("<div id='function_hint_line_"+editors[id].getCursor().line+"' class='functionHint'>"+json+"</div>");        
-        editors[id].addWidget({ch:1 , line: editors[id].getCursor().line},htmlNode.get(0), true);
-        }
-
-        if (session['last_key'] == ")"){
-        var curString = "#function_hint_line_"+editors[id].getCursor().line;
-        $(curString).remove();
-        }
-
-        
-        
-        if (typeof json == "object")
-            {
-            json_array = json.i;
-            for (i = 0;i < json_array.length;i++)
-                {
-                var cur = json_array[i];
-                haxeHint.push(cur.n);
-                }
-            localStorage.haxeHint = haxeHint;
-            var id = session['window_active_id'];
-            CodeMirror.showHint(editors[id],CodeMirror.hint.haxe);
-            
-            /*
-            var htmlNode =document.createElement("p");
-            var text =  document.createTextNode("Text or whatever");
-            htmlNode.appendChild(text)
-            
-            
-            }    
-        }
-    catch(err)
-        {
-        //console.log(err);           
-        }
-        
-        
-    
-    //$('#code_autocomplete_inner').html(retStr);
-    */
 });

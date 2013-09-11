@@ -28,3 +28,9 @@ N 20130804 - Skrivener - add page at haxeflixel wiki
 + autocomplete to detect function parameters
 + add tabs
 + new interface
+
+0.4
+====
++ Fix autocomplete bug. Now it's more stable
++ Linux compatible
+
