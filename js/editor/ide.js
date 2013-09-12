@@ -27,14 +27,15 @@ function ide_alert(type_error,content)
 
 
 
-var retstr = ['<div style="margin:10px;" class="alert alert-'+type_error+' fade in">',
+var retstr = ['<div style="margin-left:10px;margin-top:12px;margin-right:10px;" class="alert alert-'+type_error+' fade in">',
 '<a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>',
 '<strong>'+type_text+' :</strong><br/>'+content,
 '</div>'].join("\n");
 
 if (skip ==false)
     {
-    $('#notify_position').append(retstr);    
+    $('#notify_position').html(retstr);    
+    
     }
 
 }
@@ -44,6 +45,9 @@ function ide_button(type)
     {
     switch(type)
         {
+        case "newFile":
+        	system_createNewFile_dialog();
+        	break;
         case "openProject":
             ide_choose_project();
             break;
@@ -60,7 +64,53 @@ function ide_button(type)
     
     }
     
+function system_createNewFile_dialog()
+{
+$("#myModal").modal('toggle');
+$("#modal-title").html("Create New File");
 
+var html_content = ["<div class='input-group'>",
+"<input type='text' id='form_create_file' class='form-control'>",
+"<span class='input-group-addon'>.hx</span>",
+"</div>"].join("\n");
+
+$("#modal-content").html("<p>This will create a new file in the <b>source</b> folder</p>"+html_content);
+
+$("#modal-buttonOk").html("Create");
+$("#modal-buttonOk").click(function(){
+	var filename = $('#projectFile').html()+path.sep+'source'+path.sep+capitalize($('#form_create_file').val())+'.hx';
+	system_createFile(filename);
+    //var filename = $(this).val();
+    // check for duplicate
+    var fileLoaded = false;
+    for (var i = 0; i< editors.length;i++)
+        {
+        if ( $("#filename_"+i).html() == filename){fileLoaded = true;}
+        }
+
+    if (fileLoaded == false){
+        system_createNewTab();
+        var id = session['window_active_id'];
+        $('#filename_'+id).html(filename); // this is a DIV
+        $("#editor_help").hide();
+        var content = system_openFile(filename);
+        
+        var new_content = ["package;",
+							"",
+							"class "+capitalize($('#form_create_file').val()),
+							"{",
+							"}"].join("\n");
+
+        editors[id].setOption("value",new_content);
+        add_new_tab(filename,id);
+        show_tab(id);
+        ide_store_file();
+        }	
+	
+	$("#myModal").modal('toggle');
+	});
+
+}
 
 
 function ide_choose_project(){
@@ -83,8 +133,20 @@ function ide_choose_project(){
 
 function add_new_tab(tab_name,tab_id){
     tab_name = tab_name.split(path.sep).pop();
-    $("#editor_tabs").append("<li id='tab_"+tab_id+"'><a href='#' onClick='show_tab(\""+tab_id+"\")'>"+tab_name+"</a></li>");
+    
+    $("#editor_tabs").append("<li style='padding-left:30px;border:1px solid #444444;' class='list-group-item active' id='tab_"+tab_id+"'><span onClick='close_tab(\""+tab_id+"\")' class='badge'>x</span><a href='#' onClick='show_tab(\""+tab_id+"\")'>"+tab_name+"</a></li>");
     }
+
+function close_tab(id)
+	{
+	//alert(id);
+	$("#tab_"+id).remove();
+	$("#code_id_"+id).remove();
+	$('#filename_'+id).remove();
+
+	session['window_active_id'] = 0;
+	}
+
 
 function show_tab(id){
     
@@ -96,6 +158,7 @@ function show_tab(id){
     session['window_active_id'] = id;
     $("#tab_"+id).addClass("active");
     $("#code_id_"+id).show();
+    
     
     $("#button_saveFile").removeClass("icon-disabled");
     
@@ -125,9 +188,6 @@ function ide_choose_file(){
                 $('#filename_'+id).html(filename); // this is a DIV
                 $("#editor_help").hide();
                 var content = system_openFile(filename);
-                
-                
-                
                 
                 editors[id].setOption("value",content);
                 add_new_tab(filename,id);

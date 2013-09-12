@@ -1,6 +1,16 @@
             html,body{margin:0px;padding:0px;overflow-y:hidden;background:url(./../img/broken_noise.png) repeat;}
             /*#code{position:absolute;top:0px;left:0px;width:100px;height:100px;}*/
+
+            .badge{
+            background:#202020;
+            color:#ffffff;
             
+            }
+            
+            .badge:hover{
+            background:#880000;
+            color:#ffffff;
+            }
             
             .CodeMirror {
             height: 100%;
@@ -78,7 +88,7 @@
             }
         
         #editor_left{
-            background:#3E3E3E;
+            background:#202020;
             height:inherit;
             padding:0px;
             }        
@@ -109,9 +119,21 @@
         color:#ffffff;
         text-align:center;
         }
+        
+        .list-group{
+        background:#202020;
+        margin:10px;
+        }
+        .list-group a{
+        color:#FFFFFF;
+        }
             
-        .nav .active{
+        .list-group .active{
         background:#FFC132;
+        }
+
+        .list-group .active a{
+        color:#202020;
         }
         
         .nav li{
