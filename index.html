@@ -63,7 +63,36 @@
             fileDialog:<input id="fileDialog" type="file" />
         </div>
    
-        <div style="position:absolute;top:10px;left:10px;width:100%;z-index:999;" id='notify_position'></div>
+        <div style="position:absolute;top:0px;left:0px;width:100%;z-index:999;" id='notify_position'></div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 id="modal-title" class="modal-title">Modal title</h4>
+        </div>
+        <div class="modal-body" id="modal-content">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="modal-buttonOk">OK</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+
+
+
+
+
+
+
 
         <div class="state" id='splash'>
             <div class='valign_parent'>
@@ -72,8 +101,10 @@
                         <img width=100% src="./img/haxeflixel-logo.png" />
                         <h3 class="text-center">HaxeFlixel IDE</h3>
                         <p id="version" class="text-center"></p>
+                        <!--
                         <br/>
                         <button id="button_newProject"  type="button" class="glyphicon glyphicon-file btn btn-default btn-small btn-block"        onClick="" disabled="disabled">&nbsp;&nbsp;Create New Project</button>
+                        -->
                         <br/>
                         <button id="button_openProject" type="button" class="glyphicon glyphicon-folder-open btn btn-default btn-small btn-block" onClick="ide_button('openProject');">&nbsp;&nbsp;Open Existing Project</button>
                     </div>
@@ -84,15 +115,16 @@
         <div class="state" id='editor'>
             <div style="height:inherit;" class="row">
             
-                <div id="editor_left" class="col-3 ">
+                <div id="editor_left" class="col-3 " style="overflow-y:auto;overflow-x:hidden;">
                     <div style="margin-top:20px;" class="text-center">
                         <h3 style="color:#ffffff">HaxeFlixel IDE</h3>
+						<span id="button_newFile" onClick="ide_button('newFile');" title="New File (Ctrl+N)" class="glyphicon glyphicon-file"></span>
                         <span id="button_openFile" onClick="ide_button('openFile');" title="Open File (Ctrl+O)" class="glyphicon glyphicon-folder-open"></span>
                         <span id="button_saveFile" onClick="ide_button('saveFile');" title="Save File (Ctrl+S)" class="glyphicon glyphicon-download-alt icon-disabled"></span>
                         <span id="button_compile"  onClick="ide_button('compileFlash');" title="Compile to flash (F5)" class="glyphicon glyphicon-play"></span>
                     </div>
-                    <hr/>
-                    <ul id="editor_tabs" class="nav nav-list">
+
+                    <ul id="editor_tabs" class="list-group">
                     </ul>                    
                 </div>
                
@@ -107,6 +139,7 @@
                                 
                                 <div class="row">
                                     <div class="col-6">
+										<p><span title="New File (Ctrl+N)" class="glyphicon glyphicon-file"></span>&nbsp;&nbsp; Create a new file in source folder</p>
                                         <p><span title="Open File (Ctrl+O)" class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp; Open file in a new tab</p>
                                         <p><span title="Save File (Ctrl+O)" class="glyphicon glyphicon-download-alt"></span>&nbsp;&nbsp; Save the current active file</p>
                                     </div>
