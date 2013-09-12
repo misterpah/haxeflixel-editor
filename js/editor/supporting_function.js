@@ -16,10 +16,25 @@ function system_check_os(){
         }
     }
 
-function system_openFile( filename)
+function capitalize(myString)
+	{
+	firstChar = myString.substr( 0, 1 ); // == "c"
+	firstChar = firstChar.toUpperCase();
+	tail = myString.substr( 1 ); // == "heeseburger"
+	myString = firstChar + tail; // myString == "Cheeseburger"
+	return myString;
+	}
+
+
+function system_openFile(filename)
     {
     return fs.readFileSync(filename,"utf-8");
     }
+    
+function system_createFile(filename)
+	{
+	fs.openSync(filename,"wx");
+	}
 
 function system_saveFile(filename, content)
     {
@@ -37,7 +52,7 @@ function system_parse_project()
             var the_error = false;
             if (stderr != "") {the_error = true;}
             if (the_error == true){
-                notify("ERROR","not a valid HaxeFlixel Project File (XML)");
+                ide_alert("error","not a valid HaxeFlixel Project File (XML)");
                 }
             if (the_error == false) {
                 $('#projectContent').html(stdout);
