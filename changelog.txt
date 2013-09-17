@@ -33,5 +33,11 @@ N 20130804 - Skrivener - add page at haxeflixel wiki
 ====
 + Fix autocomplete bug. Now it's more stable
 + Linux compatible
-+ add "create new file"
+
+0.5 a
+====
++ Fix autocomplete bug in windows.
++ add create new file
++ add create new project
+
 
