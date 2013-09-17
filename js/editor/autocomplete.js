@@ -39,7 +39,7 @@ $(document).on("autocomplete",function(event){
 		}
 		if (system_check_os() == 'windows'){
 
-        execStr = "cd /D "+$('#projectFile').html()+" & haxe "+$('#projectContent').html().split("\n").join(" ") +" -main "+className+" --display "+fileName+"@"+session['current_key_pos'] ;
+        execStr = "cd /D "+$('#projectFile').html()+" & haxe "+$('#projectContent').html().split("\n").join(" ") +" --display "+fileName+"@"+session['current_key_pos'] ;
 		}
 		
 		console.log(execStr);

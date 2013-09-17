@@ -48,6 +48,10 @@ function ide_button(type)
         case "newFile":
         	system_createNewFile_dialog();
         	break;
+
+        case "newProject":
+            ide_new_project_dialog();
+            break;
         case "openProject":
             ide_choose_project();
             break;
@@ -63,6 +67,125 @@ function ide_button(type)
         }
     
     }
+    
+    
+function ide_new_project_dialog()
+	{
+	$("#myModal").modal('toggle');
+	$("#modal-title").html("Create New Project");
+
+	var html_content = ["<div class='input-group'>",
+	"<input type='text' id='form_create_project' class='form-control'>",
+	"</div>"].join("\n");
+
+
+	if (system_check_os() == 'linux'){
+		nwworkingdir="~/haxeflixel/&lt;your_project_name&gt;"
+		}
+	if (system_check_os() == 'windows'){
+		nwworkingdir="C:\\haxeflixel\\&lt;your_project_name&gt;";
+		}
+
+	$("#modal-content").html("<p>This will create a new project in the <b>"+nwworkingdir+"</b> folder</p>"+html_content);
+
+	$("#modal-buttonOk").html("Create");
+	$("#modal-buttonOk").click(function(){
+		if($("#form_create_project").val() != "")
+		{
+		
+		if (system_check_os() == 'linux')
+			{
+			os_cmd = ["cd ~",
+					"mkdir haxeflixel",
+					"cd haxeflixel",
+					"mkdir \""+$("#form_create_project").val()+"\"",
+					"cd \""+$("#form_create_project").val()+"\"",
+					"haxelib run flixel -name \""+$("#form_create_project").val()+"\""
+					].join(" ; ");
+			}
+
+		if (system_check_os() == 'windows')
+			{
+			os_cmd = ["cd /D c:\\",
+					"mkdir haxeflixel",
+					"cd haxeflixel",
+					"mkdir \""+$("#form_create_project").val()+"\" ",
+					"cd \""+$("#form_create_project").val()+"\"",
+					"haxelib run flixel -name \""+$("#form_create_project").val()+"\""
+					].join(" & ");
+			}
+		
+		
+		//console.log(os_cmd);
+		
+		exec(os_cmd,
+		    function(error,stdout,stderr){
+		        if (error != null)
+		            {
+		            ide_alert("error",stderr);
+		            }
+		
+		        }
+		    );
+		
+
+
+            //var filename = $(this).val();
+            //var filename = ""
+            
+            var filename = "";
+       		if (system_check_os() == 'linux')
+       		{
+       		filename = "~/haxeflixel/"+$("#form_create_project").val()+"/"+$("#form_create_project").val()+".xml";
+       		}
+       		if (system_check_os() == 'windows')
+       		{
+       		filename = "c:\\haxeflixel\\"+$("#form_create_project").val()+"\\"+$("#form_create_project").val()+".xml";
+       		}
+            console.log(filename);
+            
+            var projectFolder = filename.split(path.sep);
+            projectFolder.pop();
+            projectFolder = projectFolder.join(path.sep);                
+            $('#projectFile').html(projectFolder); // this is a DIV
+            system_parse_project();
+
+
+
+		}
+		/*
+		var filename = $('#projectFile').html()+path.sep+'source'+path.sep+capitalize($('#form_create_file').val())+'.hx';
+		system_createFile(filename);
+		//var filename = $(this).val();
+		// check for duplicate
+		var fileLoaded = false;
+		for (var i = 0; i< editors.length;i++)
+		    {
+		    if ( $("#filename_"+i).html() == filename){fileLoaded = true;}
+		    }
+
+		if (fileLoaded == false){
+		    system_createNewTab();
+		    var id = session['window_active_id'];
+		    $('#filename_'+id).html(filename); // this is a DIV
+		    $("#editor_help").hide();
+		    var content = system_openFile(filename);
+		    
+		    var new_content = ["package;",
+								"",
+								"class "+capitalize($('#form_create_file').val()),
+								"{",
+								"}"].join("\n");
+
+		    editors[id].setOption("value",new_content);
+		    add_new_tab(filename,id);
+		    show_tab(id);
+		    ide_store_file();
+		    }	
+		*/
+		$("#myModal").modal('toggle');
+		});
+	}
     
 function system_createNewFile_dialog()
 {
@@ -109,8 +232,10 @@ $("#modal-buttonOk").click(function(){
 	
 	$("#myModal").modal('toggle');
 	});
-
 }
+
+
+
 
 
 function ide_choose_project(){
