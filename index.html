@@ -48,7 +48,20 @@
                 version = "0.4";
                 $("#splash").fadeIn("slow");     
                 $("#version").html("Version "+version);
+                
+				if (system_check_os() == 'linux'){
+					nwworkingdir="/home/pah/";
+					
+					$("#fileDialog").prop("nwWorkingDir",nwworkingdir);
+					}
+				if (system_check_os() == 'windows'){
+					nwworkingdir="C:\\haxeflixel\\";
+					$("#fileDialog").prop("nwWorkingDir",nwworkingdir);
+					}
+                
                 });
+                
+                
         </script>   
         
     </head>
@@ -101,10 +114,10 @@
                         <img width=100% src="./img/haxeflixel-logo.png" />
                         <h3 class="text-center">HaxeFlixel IDE</h3>
                         <p id="version" class="text-center"></p>
-                        <!--
+                        
                         <br/>
-                        <button id="button_newProject"  type="button" class="glyphicon glyphicon-file btn btn-default btn-small btn-block"        onClick="" disabled="disabled">&nbsp;&nbsp;Create New Project</button>
-                        -->
+                        <button id="button_newProject"  type="button" class="glyphicon glyphicon-file btn btn-default btn-small btn-block"        onClick="ide_button('newProject')">&nbsp;&nbsp;Create New Project</button>
+                        
                         <br/>
                         <button id="button_openProject" type="button" class="glyphicon glyphicon-folder-open btn btn-default btn-small btn-block" onClick="ide_button('openProject');">&nbsp;&nbsp;Open Existing Project</button>
                     </div>
